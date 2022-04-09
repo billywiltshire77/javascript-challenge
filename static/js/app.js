@@ -25,7 +25,7 @@ function init() {
 
             dropdownMenu.append('option').attr("value", sample['id']).text(sample['id'])
         };
-
+        console.log(samplesData)
         plotData = samplesData[0]
         
         trace1 = {
@@ -43,27 +43,32 @@ function init() {
         };
 
         Plotly.newPlot("bar", traces, layout);
+
+        // Adding Sudject Info
+        subject = 
+        subjectInfo = d3.selectAll("#sample-metadata")
+        subjectInfo.append('p').text(`ID: ${metaData['id']}`)
+        subjectInfo.append('p').text(`ID: ${mataData['id']}`)
     });
 d3.selectAll("#selDataset").on("change", optionChanged);
-
 }
 
 function optionChanged(value) {
     let dropdownMenu = d3.select('#selDataSet');
-    let dataset = dropdownMenu.property(value);
-    let data = []
+    let dataset = dropdownMenu.property('value');
+    let data = {}
     for (let sample of samplesData) {
-        if (sample['id'] = dataset) {
-            x = sample['otu_ids']
-            y = sample['sample_values']
-            text = sample['otu_labels']
+        if (sample[value] == dataset) {
+            data['x'] = sample['otu_ids']
+            data['y'] = sample['sample_values']
+            data['text'] = sample['otu_labels']
         }
     }
 
 
-    Plotly.restyle("plot", "x", x);
-    Plotly.restyle("plot", "y", y);
-    Plotly.restyle("plot", "text", text)
+    Plotly.restyle("bar", "x", data['x']);
+    Plotly.restyle("bar", "y", data['y']);
+    Plotly.restyle("bar", "text", data['text'])
 }
 
 init();
